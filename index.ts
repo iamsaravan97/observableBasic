@@ -12,12 +12,14 @@ const Observable$ = new Observable<string>((sub) => {
   sub.next('sarvana');
   sub.next('sarala');
   sub.next('sandy');
-  sub.next('keerthi');
+  setTimeout(() => {
+    sub.next('keerthi');
+  }, 4000);
   if (!sub.closed) sub.next('arumugam');
-  sub.add(() => anotherObservable$.subscribe(observer));
-  sub.unsubscribe();
-  sub.error('error occour');
   sub.complete();
+  return () => {
+    console.log('subscibe ends');
+  };
 });
 
 const observer = {
@@ -27,4 +29,7 @@ const observer = {
 };
 
 const subscription = Observable$.subscribe(observer);
+console.log(' before unsubscribe');
+subscription.unsubscribe();
+console.log(' after unsubscribe');
 // Open the console in the bottom right to see results.
